@@ -45,7 +45,11 @@ const RegisterScreen = ({ navigation }) => {
         <Text style={styles.title}>Kayıt Ol</Text>
       </View>
 
-      <ScrollView style={styles.inputContainer}>
+      <ScrollView
+        style={styles.inputContainer}
+        showsVerticalScrollIndicator={true}
+        keyboardShouldPersistTaps="handled"
+      >
         <TextInput
           placeholder="Ad"
           style={styles.textInput}
@@ -118,64 +122,64 @@ const RegisterScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: Colors.background,
-      paddingHorizontal: 24,
-      paddingTop: 80,
-    },
-    titleBrand: {
-      fontSize: 48,
-      fontWeight: "bold",
-      color: Colors.text,
-      textAlign: "center",
-    },
-    title: {
-      fontSize: 32,
-      fontWeight: "normal",
-      color: Colors.text,
-      textAlign: "center",
-    },
-    topComponent: {
-      marginBottom: 32,
-    },
-    inputContainer: {
-      flex: 1,
-      marginBottom: 24,
-    },
-    textInput: {
-      height: 50,
-      borderWidth: 1,
-      borderColor: Colors.primary,
-      borderRadius: 12,
-      paddingHorizontal: 16,
-      marginBottom: 16,
-      backgroundColor: Colors.white,
-      color: Colors.text,
-    },
-    buttonContainer: {
-      paddingBottom: 32,
-    },
-    button: {
-      height: 50,
-      borderRadius: 12,
-      backgroundColor: Colors.primaryDark,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 16,
-    },
-    buttonText: {
-      color: Colors.white,
-      fontSize: 16,
-      fontWeight: "bold",
-    },
-    link: {
-      textAlign: "center",
-      color: Colors.primaryDark,
-      fontSize: 14,
-      textDecorationLine: "underline",
-      fontWeight: "600",
-    },
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+    paddingHorizontal: 24,
+    paddingTop: 80,
+  },
+  titleBrand: {
+    fontSize: 48,
+    fontWeight: "bold",
+    color: Colors.text,
+    textAlign: "center",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "normal",
+    color: Colors.text,
+    textAlign: "center",
+  },
+  topComponent: {
+    marginBottom: 32,
+  },
+  inputContainer: {
+    flex: 1,
+    marginBottom: 24,
+  },
+  textInput: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: Colors.white,
+    color: Colors.text,
+  },
+  buttonContainer: {
+    paddingBottom: 32,
+  },
+  button: {
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: Colors.primaryDark,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  buttonText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  link: {
+    textAlign: "center",
+    color: Colors.primaryDark,
+    fontSize: 14,
+    textDecorationLine: "underline",
+    fontWeight: "600",
+  },
+});
+
 export default RegisterScreen;
