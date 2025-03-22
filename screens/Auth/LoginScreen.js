@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert } from "react-native";
+import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -39,29 +39,63 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  return (<View style={{ padding: 20, marginTop: 100 }}>
-    <Text style={{ fontSize: 24, marginBottom: 20 }}>Giriş Yap</Text>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Giriş Yap</Text>
 
-    <Text>Email</Text>
-    <TextInput
-      value={email}
-      onChangeText={setEmail}
-      autoCapitalize="none"
-      keyboardType="email-address"
-      style={{ borderBottomWidth: 1, marginBottom: 20 }}
-    />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={styles.textInput}
+        />
 
-    <Text>Şifre</Text>
-    <TextInput
-      value={password}
-      onChangeText={setPassword}
-      secureTextEntry
-      style={{ borderBottomWidth: 1, marginBottom: 20 }}
-    />
-
-    <Button title="Giriş Yap" onPress={handleLogin} />
-    <Button title="Kayıt Ol" onPress={() => navigation.navigate("Register")} />
-  </View>);
+        <TextInput
+          placeholder="Şifre"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.textInput}
+        />
+      </View>
+      <Button title="Giriş Yap" onPress={handleLogin} />
+      <Button
+        title="Kayıt Ol"
+        onPress={() => navigation.navigate("Register")}
+      />
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: "100%",
+    height: "100vh",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: 20,
+  },
+  inputContainer: {
+    padding: 20,
+  },
+  title: {
+    position: "relative",
+    fontSize: 32,
+    fontWeight: "700",
+    marginBottom: 20,
+    top: 0,
+  },
+  textInput: {
+    width: "100%",
+    height: 50,
+    borderBottomColor: "gray",
+    borderBottomWidth: 1,
+    marginBottom: 20,
+  },
+});
 
 export default LoginScreen;
