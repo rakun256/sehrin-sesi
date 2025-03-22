@@ -3,14 +3,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import AppStack from "./AppStack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../redux/slices/authSlice";
+import api from "../api/axios";
 
 const RootNavigator = () => {
-    const [loading, setLoading] = useState(true);
-    const [authenticated, setAuthenticated] = useState(false);
-
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const checkToken = async () => {
@@ -18,16 +18,17 @@ const RootNavigator = () => {
                 const token = await AsyncStorage.getItem("token");
 
                 if(token){
-                    const user = { name: "Ecem", email: "ecem@terapinisec.com"};
+                    const user = { name: "Ecem", email: "ecem@terapinisec.com", role: "ADMIN" };
+
+                    {/* 
+                    const response = await api.get("/me");
+                    const user = response.data;
+                    */}
 
                     dispatch(loginSuccess({user, token}));
-                    setAuthenticated(true);
-                } else {
-                    setAuthenticated(false);
-                }
+                } 
             } catch (error) {
                 console.log("Token kontrol hatası: ", error);
-                setAuthenticated(false);
             } finally {
                 setLoading(false);
             }
@@ -42,7 +43,13 @@ const RootNavigator = () => {
 
     return (
         <NavigationContainer>
-            {authenticated ? <AppStack /> : <AuthStack />}
+
+            {user ? (
+                user.role === "ADMIN" ? <AdminStack /> : <AppStack />
+            ) : (
+                <AuthStack />
+            )}
+
         </NavigationContainer>
     );
 };
