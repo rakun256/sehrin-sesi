@@ -18,14 +18,11 @@ const RootNavigator = () => {
                 const token = await AsyncStorage.getItem("token");
 
                 if(token){
-                    const user = { name: "Ecem", email: "ecem@terapinisec.com", role: "ADMIN" };
-
                     {/* 
                     const response = await api.get("/me");
                     const user = response.data;
-                    */}
-
                     dispatch(loginSuccess({user, token}));
+                    */}
                 } 
             } catch (error) {
                 console.log("Token kontrol hatası: ", error);
