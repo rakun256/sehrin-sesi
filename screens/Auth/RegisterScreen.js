@@ -49,6 +49,7 @@ const RegisterScreen = ({ navigation }) => {
         style={styles.inputContainer}
         showsVerticalScrollIndicator={true}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 40 }}
       >
         <TextInput
           placeholder="Ad"
