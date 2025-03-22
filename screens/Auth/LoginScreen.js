@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Colors from "../../constants/colors";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: Colors.background,
     flex: 1,
     width: "100%",
     height: "100vh",
