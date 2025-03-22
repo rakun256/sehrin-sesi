@@ -26,7 +26,9 @@
     "react-native-screens": "~4.4.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "expo-asset": "~11.0.4",
+    "expo-modules-core": "~2.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
