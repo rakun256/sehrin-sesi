@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  <View style={{ padding: 20, marginTop: 100 }}>
+  return (<View style={{ padding: 20, marginTop: 100 }}>
     <Text style={{ fontSize: 24, marginBottom: 20 }}>Giriş Yap</Text>
 
     <Text>Email</Text>
@@ -61,7 +61,7 @@ const LoginScreen = ({ navigation }) => {
 
     <Button title="Giriş Yap" onPress={handleLogin} />
     <Button title="Kayıt Ol" onPress={() => navigation.navigate("Register")} />
-  </View>;
+  </View>);
 };
 
 export default LoginScreen;
