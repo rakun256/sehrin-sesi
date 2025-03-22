@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -42,61 +49,114 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Giriş Yap</Text>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          style={styles.textInput}
-        />
-
-        <TextInput
-          placeholder="Şifre"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.textInput}
-        />
+      <View style={styles.topContent}>
+        <Text style={styles.titleBrand}>ŞehrinSesi</Text>
+        <Text style={styles.title}>Giriş Yap</Text>
       </View>
-      <Button title="Giriş Yap" onPress={handleLogin} />
-      <Button
-        title="Kayıt Ol"
-        onPress={() => navigation.navigate("Register")}
-      />
+
+      <View style={styles.middleContent}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            style={styles.textInput}
+            placeholderTextColor={Colors.mutedText}
+          />
+
+          <TextInput
+            placeholder="Şifre"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.textInput}
+            placeholderTextColor={Colors.mutedText}
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Giriş Yap</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.secondaryButton]}
+            onPress={() => navigation.navigate("Register")}
+          >
+            <Text style={[styles.buttonText, styles.secondaryButtonText]}>
+              Kayıt Ol
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.background,
     flex: 1,
-    width: "100%",
-    height: "100vh",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: 20,
+    backgroundColor: Colors.background,
+    paddingHorizontal: 24,
+    paddingTop: 80,
   },
-  inputContainer: {
-    padding: 20,
+  titleBrand: {
+    fontSize: 48,
+    fontWeight: "bold",
+    color: Colors.text,
+    textAlign: "center",
   },
   title: {
-    position: "relative",
     fontSize: 32,
-    fontWeight: "700",
-    marginBottom: 20,
-    top: 0,
+    fontWeight: "normal",
+    color: Colors.text,
+    textAlign: "center",
+  },
+  topContent: {
+    marginBottom: 40,
+  },
+  middleContent: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  inputContainer: {
+    marginBottom: 24,
   },
   textInput: {
-    width: "100%",
     height: 50,
-    borderBottomColor: "gray",
-    borderBottomWidth: 1,
-    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: Colors.white,
+    color: Colors.text,
+  },
+  buttonContainer: {
+    marginTop: 8,
+  },
+  button: {
+    height: 50,
+    borderRadius: 12,
+    backgroundColor: Colors.primaryDark,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  buttonText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  secondaryButton: {
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.primaryDark,
+  },
+  secondaryButtonText: {
+    color: Colors.primaryDark,
   },
 });
 

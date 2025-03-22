@@ -40,7 +40,7 @@ const RootNavigator = () => {
     }
 
     return (
-        <NavigationContainer>
+        <NavigationContainer >
 
             {user ? (
                 user.role === "ADMIN" ? <AdminStack /> : <AppStack />
