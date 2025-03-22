@@ -11,6 +11,7 @@ import {
 import Colors from "../../constants/colors";
 
 const RegisterScreen = ({ navigation }) => {
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -24,6 +25,25 @@ const RegisterScreen = ({ navigation }) => {
     country: "",
     zipCode: "",
   });
+
+  const validateFields = () => {
+    const newErrors = {};
+    if (!form.username) newErrors.username = "Kullanıcı adı boş olamaz.";
+    if (!form.email) newErrors.email = "Email boş olamaz.";
+    if (!form.password) newErrors.password = "Şifre boş olamaz.";
+    if (!form.firstName) newErrors.firstName = "Ad boş olamaz.";
+    if (!form.lastName) newErrors.lastName = "Soyad boş olamaz.";
+    if (!form.phoneNumber)
+      newErrors.phoneNumber = "Telefon numarası boş olamaz.";
+    if (!form.street) newErrors.street = "Sokak / Cadde boş olamaz.";
+    if (!form.city) newErrors.city = "İlçe boş olamaz.";
+    if (!form.state) newErrors.state = "Şehir boş olamaz.";
+    if (!form.country) newErrors.country = "Ülke boş olamaz.";
+    if (!form.zipCode) newErrors.zipCode = "Posta kodu boş olamaz.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleInputChange = (key, value) => {
     setForm({
@@ -53,9 +73,20 @@ const RegisterScreen = ({ navigation }) => {
       >
         <TextInput
           placeholder="Ad"
-          style={styles.textInput}
+          value="form.firstName"
           onChangeText={(text) => handleInputChange("firstName", text)}
+          onBlur={validateFields}
+          style={[
+            styles.textInput,
+            errors.firstName && { borderColor: Colors.error },
+          ]}
+          placeholderTextColor={
+            errors.firstName ? Colors.error : Colors.mutedText
+          }
         />
+        {errors.firstName && (
+          <Text style={styles.errorText}>{errors.firsName}</Text>
+        )}
         <TextInput
           placeholder="Soyad"
           style={styles.textInput}
@@ -181,6 +212,13 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     fontWeight: "600",
   },
+  errorText: {
+    color: Colors.error,
+    fontSize: 12,
+    marginTop: -12,
+    marginBottom: 8,
+    marginLeft: 4,
+  },  
 });
 
 export default RegisterScreen;
