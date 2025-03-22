@@ -48,3 +48,11 @@ const RootNavigator = () => {
 };
 
 export default RootNavigator;
+
+{
+    /* 
+    logout butonu için
+    await AsyncStorage.removeItem('token');
+    dispatch(logout());
+    */
+}
