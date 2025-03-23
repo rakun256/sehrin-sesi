@@ -84,16 +84,15 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <View style={styles.container}>
-          <View style={styles.topComponent}>
-            <Text style={styles.titleBrand}>ŞehrinSesi</Text>
-            <Text style={styles.title}>Kayıt Ol</Text>
-          </View>
-
+      <View style={styles.container}>
+        <View style={styles.topComponent}>
+          <Text style={styles.titleBrand}>ŞehrinSesi</Text>
+          <Text style={styles.title}>Kayıt Ol</Text>
+        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
           <ScrollView
             style={styles.inputContainer}
             showsVerticalScrollIndicator={true}
@@ -274,20 +273,19 @@ const RegisterScreen = ({ navigation }) => {
               }
             />
           </ScrollView>
+        </KeyboardAvoidingView>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Kayıt Ol</Text>
+          </TouchableOpacity>
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-              <Text style={styles.buttonText}>Kayıt Ol</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={styles.link}>
-                Zaten hesabınız var mı? Giriş yapın.
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.link}>
+              Zaten hesabınız var mı? Giriş yapın.
+            </Text>
+          </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
