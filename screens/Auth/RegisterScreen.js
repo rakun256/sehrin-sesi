@@ -45,12 +45,26 @@ const RegisterScreen = ({ navigation }) => {
   const validateFields = () => {
     const newErrors = {};
     if (!form.username) newErrors.username = "Kullanıcı adı boş olamaz.";
-    if (!form.email) newErrors.email = "Email boş olamaz.";
-    if (!form.password) newErrors.password = "Şifre boş olamaz.";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email) {
+      newErrors.email = "Email boş olamaz.";
+    } else if (!emailRegex.test(form.email)) {
+      newErrors.email = "Geçerli bir email adresi girin.";
+    }
+    if (!form.password) {
+      newErrors.password = "Şifre boş olamaz.";
+    } else if (form.password.length < 8) {
+      newErrors.password = "Şifre en az 8 karakter olmalı.";
+    }
     if (!form.firstName) newErrors.firstName = "Ad boş olamaz.";
     if (!form.lastName) newErrors.lastName = "Soyad boş olamaz.";
-    if (!form.phoneNumber)
+    const phoneRegex = /^[0-9]{11}$/;
+    if (!form.phoneNumber) {
       newErrors.phoneNumber = "Telefon numarası boş olamaz.";
+    } else if (!phoneRegex.test(form.phoneNumber)) {
+      newErrors.phoneNumber =
+        "Telefon numarası 11 haneli ve rakamlardan oluşmalı.";
+    }
     if (!form.street) newErrors.street = "Sokak / Cadde boş olamaz.";
     if (!form.city) newErrors.city = "İlçe boş olamaz.";
     if (!form.state) newErrors.state = "Şehir boş olamaz.";
@@ -59,7 +73,8 @@ const RegisterScreen = ({ navigation }) => {
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
-      Alert.alert("Eksik Bilgi", "Lütfen tüm alanları doldurun.");
+      const errorMessages = Object.values(newErrors).join("\n");
+      Alert.alert("Eksik veya Hatalı Bilgi", errorMessages);
       return false;
     }
 

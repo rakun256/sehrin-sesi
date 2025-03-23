@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,10 @@ import {
   Alert,
   StyleSheet,
   TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
@@ -16,8 +20,32 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!email) newErrors.email = "Email alanı boş bırakılamaz.";
+    if (!password) newErrors.password = "Şifre alanı boş bırakılamaz.";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      const errorMessages = Object.values(newErrors).join("\n");
+      Alert.alert("Eksik veya Hatalı Bilgi", errorMessages);
+      return false;
+    }
+
+    return true;
+  };
 
   const handleLogin = async () => {
+    const isValid = validateFields();
+    if (!isValid) return;
+
     const users = [
       {
         email: "admin@demo.com",
@@ -48,50 +76,69 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topContent}>
-        <Text style={styles.titleBrand}>ŞehrinSesi</Text>
-        <Text style={styles.title}>Giriş Yap</Text>
-      </View>
-
-      <View style={styles.middleContent}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={styles.textInput}
-            placeholderTextColor={Colors.mutedText}
-          />
-
-          <TextInput
-            placeholder="Şifre"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            style={styles.textInput}
-            placeholderTextColor={Colors.mutedText}
-          />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.topContent}>
+          <Text style={styles.titleBrand}>ŞehrinSesi</Text>
+          <Text style={styles.title}>Giriş Yap</Text>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Giriş Yap</Text>
-          </TouchableOpacity>
+        <View style={styles.middleContent}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              ref={emailRef}
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current.focus()}
+              placeholder="Email"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              value={email}
+              onChangeText={setEmail}
+              style={[
+                styles.textInput,
+                errors.email && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.email ? Colors.error : Colors.mutedText
+              }
+            />
 
-          <TouchableOpacity
-            style={[styles.button, styles.secondaryButton]}
-            onPress={() => navigation.navigate("Register")}
-          >
-            <Text style={[styles.buttonText, styles.secondaryButtonText]}>
-              Kayıt Ol
-            </Text>
-          </TouchableOpacity>
+            <TextInput
+              ref={passwordRef}
+              returnKeyType="done"
+              placeholder="Şifre"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              style={[
+                styles.textInput,
+                errors.password && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.password ? Colors.error : Colors.mutedText
+              }
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Giriş Yap</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, styles.secondaryButton]}
+              onPress={() => navigation.navigate("Register")}
+            >
+              <Text style={[styles.buttonText, styles.secondaryButtonText]}>
+                Kayıt Ol
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -157,6 +204,13 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     color: Colors.primaryDark,
+  },
+  errorText: {
+    color: Colors.error,
+    fontSize: 12,
+    marginTop: -12,
+    marginBottom: 8,
+    marginLeft: 4,
   },
 });
 
