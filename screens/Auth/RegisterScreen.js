@@ -13,8 +13,10 @@ import {
   Platform,
 } from "react-native";
 import Colors from "../../constants/colors";
+import { Feather } from "@expo/vector-icons";
 
 const RegisterScreen = ({ navigation }) => {
+  const [secureEntry, setSecureEntry] = useState(true);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     username: "",
@@ -183,24 +185,33 @@ const RegisterScreen = ({ navigation }) => {
                 errors.email ? Colors.error : Colors.mutedText
               }
             />
-            <TextInput
-              ref={passwordRef}
-              returnKeyType="next"
-              onSubmitEditing={() => phoneNumberRef.current.focus()}
-              placeholder="Şifre"
-              secureTextEntry={true}
-              textContentType="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={(text) => handleInputChange("password", text)}
-              style={[
-                styles.textInput,
-                errors.password && { borderColor: Colors.error },
-              ]}
-              placeholderTextColor={
-                errors.password ? Colors.error : Colors.mutedText
-              }
-            />
+            <View style={styles.inputWithIcon}>
+              <TextInput
+                ref={passwordRef}
+                returnKeyType="next"
+                onSubmitEditing={() => phoneNumberRef.current.focus()}
+                placeholder="Şifre"
+                secureTextEntry={secureEntry}
+                textContentType="password"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChangeText={(text) => handleInputChange("password", text)}
+                style={[
+                  styles.textInputWithIcon,
+                  errors.password && { borderColor: Colors.error },
+                ]}
+                placeholderTextColor={
+                  errors.password ? Colors.error : Colors.mutedText
+                }
+              />
+              <TouchableOpacity onPress={() => setSecureEntry(!secureEntry)}>
+                <Feather
+                  name={secureEntry ? "eye-off" : "eye"}
+                  size={20}
+                  color={Colors.mutedText}
+                />
+              </TouchableOpacity>
+            </View>
             <TextInput
               ref={phoneNumberRef}
               returnKeyType="next"
@@ -370,6 +381,21 @@ const styles = StyleSheet.create({
     marginTop: -12,
     marginBottom: 8,
     marginLeft: 4,
+  },
+  inputWithIcon: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: Colors.white,
+  },
+  textInputWithIcon: {
+    flex: 1,
+    height: 50,
+    color: Colors.text,
   },
 });
 
