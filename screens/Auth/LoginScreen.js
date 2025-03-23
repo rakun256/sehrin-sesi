@@ -13,12 +13,14 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Colors from "../../constants/colors";
+import { Feather } from "@expo/vector-icons";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [secureEntry, setSecureEntry] = useState(true);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -102,22 +104,30 @@ const LoginScreen = ({ navigation }) => {
                 errors.email ? Colors.error : Colors.mutedText
               }
             />
-
-            <TextInput
-              ref={passwordRef}
-              returnKeyType="done"
-              placeholder="Şifre"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              style={[
-                styles.textInput,
-                errors.password && { borderColor: Colors.error },
-              ]}
-              placeholderTextColor={
-                errors.password ? Colors.error : Colors.mutedText
-              }
-            />
+            <View style={styles.inputWithIcon}>
+              <TextInput
+                ref={passwordRef}
+                returnKeyType="done"
+                placeholder="Şifre"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={secureEntry}
+                style={[
+                  styles.textInputWithIcon,
+                  errors.password && { borderColor: Colors.error },
+                ]}
+                placeholderTextColor={
+                  errors.password ? Colors.error : Colors.mutedText
+                }
+              />
+              <TouchableOpacity onPress={() => setSecureEntry(!secureEntry)}>
+                <Feather
+                  name={secureEntry ? "eye-off" : "eye"}
+                  size={20}
+                  color={Colors.mutedText}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.buttonContainer}>
@@ -209,6 +219,22 @@ const styles = StyleSheet.create({
     marginTop: -12,
     marginBottom: 8,
     marginLeft: 4,
+  },
+  inputWithIcon: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: Colors.white,
+  },
+
+  textInputWithIcon: {
+    flex: 1,
+    height: 50,
+    color: Colors.text,
   },
 });
 
