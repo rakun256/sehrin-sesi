@@ -19,13 +19,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#F8FAF9"
-      }
+      },
+      "package": "com.emreuslu.SehrinSesi"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-asset"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a8926386-273d-49ff-85a6-638d89dbcea3"
+      }
+    },
+    "owner": "emreuslu"
   }
 }
