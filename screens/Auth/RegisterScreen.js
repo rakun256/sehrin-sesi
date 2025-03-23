@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import Colors from "../../constants/colors";
 
@@ -16,7 +20,7 @@ const RegisterScreen = ({ navigation }) => {
     username: "",
     email: "",
     password: "",
-    firsName: "",
+    firstName: "",
     lastName: "",
     phoneNumber: "",
     street: "",
@@ -25,6 +29,18 @@ const RegisterScreen = ({ navigation }) => {
     country: "",
     zipCode: "",
   });
+
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const usernameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const phoneNumberRef = useRef();
+  const streetRef = useRef();
+  const cityRef = useRef();
+  const stateRef = useRef();
+  const countryRef = useRef();
+  const zipCodeRef = useRef();
 
   const validateFields = () => {
     const newErrors = {};
@@ -42,7 +58,12 @@ const RegisterScreen = ({ navigation }) => {
     if (!form.zipCode) newErrors.zipCode = "Posta kodu boş olamaz.";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (Object.keys(newErrors).length > 0) {
+      Alert.alert("Eksik Bilgi", "Lütfen tüm alanları doldurun.");
+      return false;
+    }
+
+    return true;
   };
 
   const handleInputChange = (key, value) => {
@@ -53,103 +74,221 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleRegister = () => {
+    const isValid = validateFields();
+    if (!isValid) return;
+
     console.log("Kayıt verileri:", form);
     Alert.alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
     navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topComponent}>
-        <Text style={styles.titleBrand}>ŞehrinSesi</Text>
-        <Text style={styles.title}>Kayıt Ol</Text>
-      </View>
-
-      <ScrollView
-        style={styles.inputContainer}
-        showsVerticalScrollIndicator={true}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: 40 }}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
       >
-        <TextInput
-          placeholder="Ad"
-          value="form.firstName"
-          onChangeText={(text) => handleInputChange("firstName", text)}
-          onBlur={validateFields}
-          style={[
-            styles.textInput,
-            errors.firstName && { borderColor: Colors.error },
-          ]}
-          placeholderTextColor={
-            errors.firstName ? Colors.error : Colors.mutedText
-          }
-        />
-        {errors.firstName && (
-          <Text style={styles.errorText}>{errors.firsName}</Text>
-        )}
-        <TextInput
-          placeholder="Soyad"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("lastName", text)}
-        />
-        <TextInput
-          placeholder="Kullanıcı Adı"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("username", text)}
-        />
-        <TextInput
-          placeholder="Email"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("email", text)}
-        />
-        <TextInput
-          placeholder="Şifre"
-          style={styles.textInput}
-          secureTextEntry={true}
-          onChangeText={(text) => handleInputChange("password", text)}
-        />
-        <TextInput
-          placeholder="Telefon Numarası"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("phoneNumber", text)}
-        />
-        <TextInput
-          placeholder="Sokak / Cadde"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("street", text)}
-        />
-        <TextInput
-          placeholder="İlçe"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("city", text)}
-        />
-        <TextInput
-          placeholder="Şehir"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("state", text)}
-        />
-        <TextInput
-          placeholder="Ülke"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("country", text)}
-        />
-        <TextInput
-          placeholder="Posta Kodu"
-          style={styles.textInput}
-          onChangeText={(text) => handleInputChange("zipCode", text)}
-        />
-      </ScrollView>
+        <View style={styles.container}>
+          <View style={styles.topComponent}>
+            <Text style={styles.titleBrand}>ŞehrinSesi</Text>
+            <Text style={styles.title}>Kayıt Ol</Text>
+          </View>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Kayıt Ol</Text>
-        </TouchableOpacity>
+          <ScrollView
+            style={styles.inputContainer}
+            showsVerticalScrollIndicator={true}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ paddingBottom: 40 }}
+          >
+            <TextInput
+              ref={firstNameRef}
+              returnKeyType="next"
+              onSubmitEditing={() => lastNameRef.current.focus()}
+              placeholder="Ad"
+              autoCapitalize="words"
+              autoCorrect={false}
+              textContentType="givenName"
+              onChangeText={(text) => handleInputChange("firstName", text)}
+              style={[
+                styles.textInput,
+                errors.firstName && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.firstName ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={lastNameRef}
+              returnKeyType="next"
+              onSubmitEditing={() => usernameRef.current.focus()}
+              placeholder="Soyad"
+              autoCapitalize="words"
+              autoCorrect={false}
+              textContentType="familyName"
+              onChangeText={(text) => handleInputChange("lastName", text)}
+              style={[
+                styles.textInput,
+                errors.lastName && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.lastName ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={usernameRef}
+              returnKeyType="next"
+              onSubmitEditing={() => emailRef.current.focus()}
+              placeholder="Kullanıcı Adı"
+              autoCapitalize="none"
+              autoCorrect={false}
+              textContentType="username"
+              onChangeText={(text) => handleInputChange("username", text)}
+              style={[
+                styles.textInput,
+                errors.username && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.username ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={emailRef}
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current.focus()}
+              placeholder="Email"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              onChangeText={(text) => handleInputChange("email", text)}
+              style={[
+                styles.textInput,
+                errors.email && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.email ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={passwordRef}
+              returnKeyType="next"
+              onSubmitEditing={() => phoneNumberRef.current.focus()}
+              placeholder="Şifre"
+              secureTextEntry={true}
+              textContentType="password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={(text) => handleInputChange("password", text)}
+              style={[
+                styles.textInput,
+                errors.password && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.password ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={phoneNumberRef}
+              returnKeyType="next"
+              onSubmitEditing={() => streetRef.current.focus()}
+              placeholder="Telefon Numarası"
+              keyboardType="phone-pad"
+              textContentType="telephoneNumber"
+              onChangeText={(text) => handleInputChange("phoneNumber", text)}
+              style={[
+                styles.textInput,
+                errors.phoneNumber && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.phoneNumber ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={streetRef}
+              returnKeyType="next"
+              onSubmitEditing={() => cityRef.current.focus()}
+              placeholder="Mahalle / Sokak / Cadde"
+              onChangeText={(text) => handleInputChange("street", text)}
+              style={[
+                styles.textInput,
+                errors.street && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.street ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={cityRef}
+              returnKeyType="next"
+              onSubmitEditing={() => stateRef.current.focus()}
+              placeholder="İlçe"
+              onChangeText={(text) => handleInputChange("city", text)}
+              style={[
+                styles.textInput,
+                errors.city && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.city ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={stateRef}
+              returnKeyType="next"
+              onSubmitEditing={() => countryRef.current.focus()}
+              placeholder="Şehir"
+              onChangeText={(text) => handleInputChange("state", text)}
+              style={[
+                styles.textInput,
+                errors.state && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.state ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={countryRef}
+              returnKeyType="next"
+              onSubmitEditing={() => zipCodeRef.current.focus()}
+              placeholder="Ülke"
+              onChangeText={(text) => handleInputChange("country", text)}
+              style={[
+                styles.textInput,
+                errors.country && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.country ? Colors.error : Colors.mutedText
+              }
+            />
+            <TextInput
+              ref={zipCodeRef}
+              returnKeyType="done"
+              placeholder="Posta Kodu"
+              keyboardType="number-pad"
+              onChangeText={(text) => handleInputChange("zipCode", text)}
+              style={[
+                styles.textInput,
+                errors.zipCode && { borderColor: Colors.error },
+              ]}
+              placeholderTextColor={
+                errors.zipCode ? Colors.error : Colors.mutedText
+              }
+            />
+          </ScrollView>
 
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.link}>Zaten hesabınız var mı? Giriş yapın.</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Kayıt Ol</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Text style={styles.link}>
+                Zaten hesabınız var mı? Giriş yapın.
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -218,7 +357,7 @@ const styles = StyleSheet.create({
     marginTop: -12,
     marginBottom: 8,
     marginLeft: 4,
-  },  
+  },
 });
 
 export default RegisterScreen;
