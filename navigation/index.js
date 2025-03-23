@@ -9,55 +9,58 @@ import { loginSuccess } from "../redux/slices/authSlice";
 import api from "../api/axios";
 
 const RootNavigator = () => {
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth.user);
-    const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const checkToken = async () => {
-            try{
-                const token = await AsyncStorage.getItem("token");
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        const userJSON = await AsyncStorage.getItem("user");
 
-                if(token){
-                    {/* 
+        console.log("🚀 Token alındı mı?:", token);
+        console.log("👤 User JSON:", userJSON);
+
+        const user = userJSON ? JSON.parse(userJSON) : null;
+
+        if (token && user) {
+          dispatch(loginSuccess({ user, token }));
+          {
+            /* 
                     const response = await api.get("/me");
                     const user = response.data;
                     dispatch(loginSuccess({user, token}));
-                    */}
-                } 
-            } catch (error) {
-                console.log("Token kontrol hatası: ", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+                    */
+          }
+        }
+      } catch (error) {
+        console.log("Token kontrol hatası: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        checkToken();
-    });
+    checkToken();
+  }, []);
 
-    if(loading){
-        return null;
-    }
+  if (loading) {
+    return null;
+  }
 
-    return (
-        <NavigationContainer >
-
-            {user ? (
-                user.role === "ADMIN" ? <AdminStack /> : <AppStack />
-            ) : (
-                <AuthStack />
-            )}
-
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      {user ? (
+        user.role === "ADMIN" ? (
+          <AdminStack />
+        ) : (
+          <AppStack />
+        )
+      ) : (
+        <AuthStack />
+      )}
+    </NavigationContainer>
+  );
 };
 
 export default RootNavigator;
-
-{
-    /* 
-    logout butonu için
-    await AsyncStorage.removeItem('token');
-    dispatch(logout());
-    */
-}
