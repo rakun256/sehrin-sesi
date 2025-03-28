@@ -69,6 +69,7 @@ const LoginScreen = ({ navigation }) => {
       const token = "mock-token-123";
       dispatch(loginSuccess({ user: matchedUser, token }));
       await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("user", JSON.stringify(matchedUser));
       Alert.alert("Giriş Başarılı", "Hoşgeldiniz " + matchedUser.name);
     } else {
       Alert.alert("Hata", "Email veya şifre hatalı.");
