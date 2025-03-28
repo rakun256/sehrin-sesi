@@ -5,15 +5,15 @@ import ReportScreen from "../../screens/ReportScreen";
 const Stack = createNativeStackNavigator();
 
 const ReportStack = () => {
-    <Stack.Navigator>
-        <Stack.Screen 
-            name="Report"
-            component={ReportScreen}
-            options={{
-                title: "Sorun Bildir"
-            }}
-        />
-    </Stack.Navigator>
-}
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Report"
+      component={ReportScreen}
+      options={{
+        title: "Sorun Bildir",
+      }}
+    />
+  </Stack.Navigator>;
+};
 
 export default ReportStack;
