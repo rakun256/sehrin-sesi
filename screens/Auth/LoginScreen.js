@@ -105,7 +105,12 @@ const LoginScreen = ({ navigation }) => {
                 errors.email ? Colors.error : Colors.mutedText
               }
             />
-            <View style={styles.inputWithIcon}>
+            <View
+              style={[
+                styles.inputWithIcon,
+                errors.password && { borderColor: Colors.error },
+              ]}
+            >
               <TextInput
                 ref={passwordRef}
                 returnKeyType="done"

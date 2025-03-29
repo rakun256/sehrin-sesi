@@ -5,15 +5,17 @@ import ProfileScreen from "../../screens/App/ProfileScreen";
 const Stack = createNativeStackNavigator();
 
 const ProfileStack = () => {
-  <Stack.Navigator>
-    <Stack.Screen
-      name="Profile"
-      component={ProfileScreen}
-      options={{
-        title: "Hesabım",
-      }}
-    />
-  </Stack.Navigator>;
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Hesabım",
+        }}
+      />
+    </Stack.Navigator>
+  );
 };
 
 export default ProfileStack;

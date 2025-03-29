@@ -15,6 +15,22 @@ const MainTab = () => {
         headerShown: false,
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.mutedText,
+        tabBarStyle: {
+          backgroundColor: Colors.background,
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowColor: "transparent",
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginBottom: 5,
+        },
+        tabBarIconStyle: {
+          marginBottom: 0,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 5,
+        },
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
